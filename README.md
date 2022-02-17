@@ -62,6 +62,7 @@ The release package is compiled with VS2022, so you'll need the redistributables
 
 As for what it looks like, if you've seen the 360 version, you've seen the PC version too.
 
-TODO: put screenshots here...
+
+![Streakflares](Screenshots/ss1.png)
 
 
