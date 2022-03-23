@@ -3,20 +3,20 @@
 //
 #include "global.h"
 
-shared float4x4 cmWorldView			: REG_cmWorldView; //WORLDVIEW
-shared float4x4 cmWorldMat			: REG_cmWorldMat;  //local to world matrix
-shared float3	cvLocalEyePos		: REG_cvLocalEyePos; //LOCALEYEPOS;
-shared float4	cvTextureOffset		: REG_cvTextureOffset; //TEXTUREANIMOFFSET;
+shared float4x4 cmWorldView			: cmWorldView; //WORLDVIEW
+shared float4x4 cmWorldMat			: cmWorldMat;  //local to world matrix
+shared float3	cvLocalEyePos		: cvLocalEyePos; //LOCALEYEPOS;
+shared float4	cvTextureOffset		: cvTextureOffset; //TEXTUREANIMOFFSET;
 
 
-shared float cfBrightness			: REG_cfBrightness; //STANDARD_BRIGHTNESS
-shared float4 cvLocalCenter			: REG_cvLocalCenter; //LOCALCENTER;
-shared float4 cvBaseAlphaRef		: REG_cvBaseAlphaRef; //BASEALPHAREF;
-shared float4 cvBlurParams			: REG_cvBlurParams; //IS_MOTIONBLUR_VIGNETTED;
-shared float4 cmPrevWorldViewProj		: REG_cmPrevWorldViewProj; //BASEALPHAREF;
-//shared float4 cfSplitScreenUVScale	: REG_cfSplitScreenUVScale; // PC edit - no splitscreen yet
-shared float  cfMipMapBias			: REG_cfMipMapBias;
-shared float4 cvFogColour           : REG_cvFogColour;
+shared float cfBrightness			: cfBrightness; //STANDARD_BRIGHTNESS
+shared float4 cvLocalCenter			: cvLocalCenter; //LOCALCENTER;
+shared float4 cvBaseAlphaRef		: cvBaseAlphaRef; //BASEALPHAREF;
+shared float4 cvBlurParams			: cvBlurParams; //IS_MOTIONBLUR_VIGNETTED;
+shared float4 cmPrevWorldViewProj		: cmPrevWorldViewProj; //BASEALPHAREF;
+//shared float4 cfSplitScreenUVScale	: cfSplitScreenUVScale; // PC edit - no splitscreen yet
+shared float  cfMipMapBias			: cfMipMapBias;
+shared float4 cvFogColour           : cvFogColour;
 
 
 static const float FuzzWidth = 0.15f;//0.05f;//changed from 0.05 to 0.15 by Lee Rosenbaum Aug 23, 2006;
