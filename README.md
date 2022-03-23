@@ -34,8 +34,6 @@ The hook basically takes the appropriate values from the game memory (in `pVisua
 
 This includes the speed of the camera, amount of NOS and the camera's X direction.
 
-
-
 As for the rain, included is a hook to a function which controls some parameters in the shader during `Rain::Render`. By setting a custom technique in the shader called "raindrop" we can control the shader only on the rain and not the other particles.
 
 This is done by calling `eEffect::SetCurrentPass`.
@@ -54,15 +52,10 @@ We can safely assume that Black Box was mostly developing with NVIDIA GPUs on th
 
 You can download a release package in the Releases tab and try it for yourself.
 
-Minimum requirement is that your GPU now supports pixel shader 3.0 and vertex shader 2.0 (which is practically any GPU in the last 10 years).
+
 
 The release package is compiled with VS2022, so you'll need the redistributables installed.
 
-
-
 As for what it looks like, if you've seen the 360 version, you've seen the PC version too.
 
-
 ![Streakflares](Screenshots/ss1.png)
-
-

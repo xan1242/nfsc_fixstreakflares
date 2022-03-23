@@ -39,7 +39,7 @@ float magnitude_debug = 1.0;
 DECLARE_TEXTURE(MISCMAP1_TEXTURE)
 sampler MISCMAP1_SAMPLER = sampler_state	// backbuffer for screen distortion
 {
-    ASSIGN_TEXTURE(MISCMAP1_TEXTURE)
+	ASSIGN_TEXTURE(MISCMAP1_TEXTURE)
 	AddressU = CLAMP;
 	AddressV = CLAMP;
 	DECLARE_MIPFILTER(LINEAR)
@@ -50,7 +50,7 @@ sampler MISCMAP1_SAMPLER = sampler_state	// backbuffer for screen distortion
 DECLARE_TEXTURE(OPACITYMAP_TEXTURE)
 sampler OPACITY_SAMPLER = sampler_state	// rain alpha texture
 {
-    ASSIGN_TEXTURE(OPACITYMAP_TEXTURE)
+	ASSIGN_TEXTURE(OPACITYMAP_TEXTURE)
 	AddressU = CLAMP;
 	AddressV = CLAMP;
 	DECLARE_MIPFILTER(LINEAR)
@@ -92,7 +92,7 @@ struct VS_INPUT
 	float4 tex		: TEXCOORD;
 	float4 size		: TEXCOORD1;
 	//int4   light_index	: BLENDINDICES;
-    int4   light_index	: TEXCOORD2;
+	int4   light_index	: TEXCOORD2;
 };
 
 struct VtoP_NormalMapped
@@ -135,28 +135,28 @@ struct VtoP_Depth
 float3x3 BuildRotate(float angle, float3 rotAxis)
 {
 	float3x3 m;
-    // float fSin = sin(angle);
-    // float fCos = cos(angle);
-    float2 sc;
-    sincos(angle,sc.x,sc.y);
+	// float fSin = sin(angle);
+	// float fCos = cos(angle);
+	float2 sc;
+	sincos(angle,sc.x,sc.y);
 	float3 axis = normalize(rotAxis);
 
-    float3 cosAxis = (1.0f - sc.y) * axis;
-    float3 sinAxis = sc.x * axis;
-    m[0] = cosAxis.x * axis; 
-    m[1] = cosAxis.y * axis; 
-    m[2] = cosAxis.z * axis; 
-    m[0][0] += sc.y;
-    m[0][1] += sinAxis.z;
-    m[0][2] -= sinAxis.y;
-    m[1][0] -= sinAxis.z;
-    m[1][1] += sc.y;
-    m[1][2] += sinAxis.x;
-    m[2][0] += sinAxis.y;
-    m[2][1] -= sinAxis.x;
-    m[2][2] += sc.y;
-    
-    return m;
+	float3 cosAxis = (1.0f - sc.y) * axis;
+	float3 sinAxis = sc.x * axis;
+	m[0] = cosAxis.x * axis; 
+	m[1] = cosAxis.y * axis; 
+	m[2] = cosAxis.z * axis; 
+	m[0][0] += sc.y;
+	m[0][1] += sinAxis.z;
+	m[0][2] -= sinAxis.y;
+	m[1][0] -= sinAxis.z;
+	m[1][1] += sc.y;
+	m[1][2] += sinAxis.x;
+	m[2][0] += sinAxis.y;
+	m[2][1] -= sinAxis.x;
+	m[2][2] += sc.y;
+	
+	return m;
 }
 
 VtoP_NormalMapped vertex_shader_particles(const VS_INPUT IN)
@@ -197,10 +197,10 @@ VtoP_NormalMapped vertex_shader_particles(const VS_INPUT IN)
 	// Read which one it is:
 	int lightIndex = IN.light_index.x;
 	//float3 lightPos = cvLightPosition.xyz;
-    float3 lightPos = cavLightPositions[lightIndex].xyz; // PC edit - it uses arrays
+	float3 lightPos = cavLightPositions[lightIndex].xyz; // PC edit - it uses arrays
 
 	float3 worldPos = mul(IN.position, cmWorldMat);
- 	float3 toLightSource = normalize(lightPos - worldPos);
+	float3 toLightSource = normalize(lightPos - worldPos);
 
 	// Create the matrix which transforms from world space to tangent space
 	float3 tangent = right;
@@ -255,7 +255,7 @@ VtoP_NormalMapped vertex_shader_particles(const VS_INPUT IN)
 PS_OUTPUT pixel_shader_particles(const VtoP_NormalMapped IN)
 {
 	PS_OUTPUT OUT;
-    float  shadow = 1;//DoShadow( IN.shadowTex, 1 ) * 0.5 + 0.5;
+	float  shadow = 1;//DoShadow( IN.shadowTex, 1 ) * 0.5 + 0.5;
 
 	float4 baseColour = tex2D(DIFFUSE_SAMPLER, IN.tex) * IN.color;
 
@@ -285,7 +285,7 @@ PS_OUTPUT pixel_shader_particles(const VtoP_NormalMapped IN)
 	float nDotL = saturate(dot(normal, toLight));
 
 	float3 diffuseColour = nDotL * IN.lightColor;
-    //diffuseColour.xyz = 1;
+	//diffuseColour.xyz = 1;
 
 	// specular calculations
 	//float3 half_angle = normalize(IN.half_angle_tan);
@@ -306,18 +306,18 @@ PS_OUTPUT pixel_shader_particles(const VtoP_NormalMapped IN)
 
 technique fuzzz <int shader = 1;>
 {
-    pass p0
-    {
-        VertexShader = compile vs_2_0 vertex_shader_particles();
-        PixelShader  = compile ps_2_0 pixel_shader_particles();
-    }
+	pass p0
+	{
+		VertexShader = compile vs_1_1 vertex_shader_particles();
+		PixelShader  = compile ps_2_0 pixel_shader_particles();
+	}
 }
 
 technique no_fuzzz <int shader = 1; >
 {
 	pass p0
 	{
-		VertexShader = compile vs_2_0 vertex_shader_particles();
+		VertexShader = compile vs_1_1 vertex_shader_particles();
 		PixelShader = compile ps_2_0 pixel_shader_particles();
 	}
 }
@@ -332,7 +332,7 @@ technique no_fuzzz <int shader = 1; >
 PS_OUTPUT pixel_shader_raindrop(const VtoP_NormalMapped IN)
 {
 	PS_OUTPUT OUT;
-    float  shadow = 1;//DoShadow( IN.shadowTex, 1 ) * 0.5 + 0.5;
+	float  shadow = 1;//DoShadow( IN.shadowTex, 1 ) * 0.5 + 0.5;
 
 	float4 baseColour = tex2D(DIFFUSE_SAMPLER, IN.tex) * IN.color * 2;
 
@@ -362,7 +362,7 @@ PS_OUTPUT pixel_shader_raindrop(const VtoP_NormalMapped IN)
 	float nDotL = saturate(dot(normal, toLight));
 
 	float3 diffuseColour = nDotL * IN.lightColor;
-    //diffuseColour.xyz = 1;
+	//diffuseColour.xyz = 1;
 
 	// specular calculations
 	//float3 half_angle = normalize(IN.half_angle_tan);
@@ -380,13 +380,13 @@ PS_OUTPUT pixel_shader_raindrop(const VtoP_NormalMapped IN)
 
 technique raindrop <int shader = 1;>
 {
-    pass p0
-    {
-        FogEnable = FALSE; // NECESSARY - it's affected by sky fog otherwise!
+	pass p0
+	{
+		FogEnable = FALSE; // NECESSARY - it's affected by sky fog otherwise!
 
-        VertexShader = compile vs_2_0 vertex_shader_particles();
-        PixelShader  = compile ps_2_0 pixel_shader_raindrop();
-    }
+		VertexShader = compile vs_1_1 vertex_shader_particles();
+		PixelShader  = compile ps_2_0 pixel_shader_raindrop();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -488,18 +488,18 @@ float4 pixel_shader_flares(const VtoP_FLARES IN) : COLOR
 	
 	//result.xyz = fuzzz;//(scaled_fuzz_width - (IN.tex1.z - depth)) / FuzzWidth;
 	//result.w = 1;
-    //result.xyz = CompressColourSpace(result.xyz);
+	//result.xyz = CompressColourSpace(result.xyz);
 	
 	return result;
 }
 
 technique flares <int shader = 1; >
 {
-    pass p0
-    {
-        VertexShader = compile vs_2_0 vertex_shader_flares();
-        PixelShader  = compile ps_3_0 pixel_shader_flares();
-    }
+	pass p0
+	{
+		VertexShader = compile vs_1_1 vertex_shader_flares();
+		PixelShader  = compile ps_2_0 pixel_shader_flares();
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -530,8 +530,8 @@ VtoP_SFLARES vertex_shader_streak_flares(const VS_INPUT_FLARES IN)
 	if( doStreakFlare > 0 )
 	{
 		//float cameraSpeed = cvBaseAlphaRef.y * 75.0;
-        float cameraSpeed = cvBaseAlphaRef.y;
-        float nosAmount   = cvBaseAlphaRef.w;
+		float cameraSpeed = cvBaseAlphaRef.y;
+		float nosAmount   = cvBaseAlphaRef.w;
 
 		// Add some speed for NOS
 		//
@@ -540,29 +540,29 @@ VtoP_SFLARES vertex_shader_streak_flares(const VS_INPUT_FLARES IN)
 		//
 		// Flare is stretch to create a flare trail for Sense of Speed
 		//
- 		float4 currFramePos	= mul(IN.position, cmWorldViewProj);
+		float4 currFramePos	= mul(IN.position, cmWorldViewProj);
 
 		// Redice length if camera veleocity is off centre in the x direction
- 		cameraSpeed = lerp(cameraSpeed, 0, saturate(abs(cvBaseAlphaRef.x)/0.05));
-        //cameraSpeed = lerp(cameraSpeed, 0, saturate(abs(barx)/0.05));
+		cameraSpeed = lerp(cameraSpeed, 0, saturate(abs(cvBaseAlphaRef.x)/0.05));
+		//cameraSpeed = lerp(cameraSpeed, 0, saturate(abs(barx)/0.05));
 
- 		float4 prevFramePos = currFramePos;
- 		prevFramePos.zw += 3 + saturate(cameraSpeed / 140) * 45;		// Stretch flare back
- 		currFramePos += normalize(currFramePos - prevFramePos) * 10;	// Stretch flare forward
+		float4 prevFramePos = currFramePos;
+		prevFramePos.zw += 3 + saturate(cameraSpeed / 140) * 45;		// Stretch flare back
+		currFramePos += normalize(currFramePos - prevFramePos) * 10;	// Stretch flare forward
 
 
 
 		// Build the poly
- 		float3 prevFrameDir = prevFramePos.xyz/prevFramePos.w - currFramePos.xyz/currFramePos.w;
- 		float offsetWidth = min(abs(IN.size.x), abs(IN.size.y));
- 		offsetWidth *= 0.2;
- 		float4 currFrameOffset  = mul(IN.position + float4(offsetWidth, offsetWidth, offsetWidth, 0), cmWorldViewProj);
- 		float  currFrameSize    = distance(currFrameOffset.xy, currFramePos.xy);
- 		float3 prevFrameDirTanget = normalize(prevFrameDir);
- 		// Rotate by 90 degrees to get tangent
- 		prevFrameDirTanget.xy	= prevFrameDirTanget.yx;
- 		prevFrameDirTanget.x	= -prevFrameDirTanget.x;
- 		prevFrameDirTanget		*= currFrameSize;
+		float3 prevFrameDir = prevFramePos.xyz/prevFramePos.w - currFramePos.xyz/currFramePos.w;
+		float offsetWidth = min(abs(IN.size.x), abs(IN.size.y));
+		offsetWidth *= 0.2;
+		float4 currFrameOffset  = mul(IN.position + float4(offsetWidth, offsetWidth, offsetWidth, 0), cmWorldViewProj);
+		float  currFrameSize    = distance(currFrameOffset.xy, currFramePos.xy);
+		float3 prevFrameDirTanget = normalize(prevFrameDir);
+		// Rotate by 90 degrees to get tangent
+		prevFrameDirTanget.xy	= prevFrameDirTanget.yx;
+		prevFrameDirTanget.x	= -prevFrameDirTanget.x;
+		prevFrameDirTanget		*= currFrameSize;
 
 		// Push the tex coord futher along the streak for longer streaks
 		float texUlength = saturate(length(prevFrameDir.xyz)/0.1); // 0.3
@@ -570,8 +570,8 @@ VtoP_SFLARES vertex_shader_streak_flares(const VS_INPUT_FLARES IN)
 		tex.y = IN.size.y > 0 ? cvBaseAlphaRef.z : cvBaseAlphaRef.z + 15.0f / 128.0f;	// The v texcoord is calc in on the CPU
 		tex.z = IN.size.x > 0 ? 0 : 1;
 
-        // Cap the screen size of any particle
-        pv = world_position(pv); // BUG - IF THIS ISNT HERE ITS NOT IN THE CAMERA
+		// Cap the screen size of any particle
+		pv = world_position(pv); // BUG - IF THIS ISNT HERE ITS NOT IN THE CAMERA
 
 		pv = IN.size.x > 0 ? currFramePos : prevFramePos;
 		// Adjust brightness for lower/higher speeds
@@ -589,7 +589,7 @@ VtoP_SFLARES vertex_shader_streak_flares(const VS_INPUT_FLARES IN)
 	}
 
 	OUT.position = pv;
-	OUT.color = vertexColour; // BUG - ITS TRANSPARENT ON PC -- cameraSpeed is INCORRECT - this needs to be figured out!
+	OUT.color = vertexColour; // BUG - ITS TRANSPARENT ON PC -- cameraSpeed is INCORRECT
 	OUT.tex = tex;
 	OUT.tex.w = -5;					// bias the mipmapping
 	//OUT.color = IN.color; // uncomment this to make them render always
@@ -608,11 +608,11 @@ float4 pixel_shader_streak_flares(const VtoP_SFLARES IN) : COLOR
 
 technique streak_flares <int shader = 1;>
 {
-    pass p0
-    {
-        VertexShader = compile vs_2_0 vertex_shader_streak_flares();
-        PixelShader  = compile ps_2_0 pixel_shader_streak_flares();
-    }
+	pass p0
+	{
+		VertexShader = compile vs_1_1 vertex_shader_streak_flares();
+		PixelShader  = compile ps_2_0 pixel_shader_streak_flares();
+	}
 }
 
 
@@ -660,11 +660,11 @@ float4 pixel_shader_onscreen_distort(const VtoP_RAIN IN) : COLOR0
 
 technique onscreen_distort <int shader = 1;>
 {
-    pass p0
-    {
-        VertexShader = compile vs_2_0 vertex_shader_passthru();
-        PixelShader  = compile ps_3_0 pixel_shader_onscreen_distort();
-    }
+	pass p0
+	{
+		VertexShader = compile vs_1_1 vertex_shader_passthru();
+		PixelShader  = compile ps_2_0 pixel_shader_onscreen_distort();
+	}
 }
 
 //#include "ZPrePass_fx.h" // PC edit - no need for ZPrePass - PC renderer doesn't use it
